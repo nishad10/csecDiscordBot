@@ -1,13 +1,15 @@
 const Discord = require('discord.js')
 const client = new Discord.Client()
 const dotenv = require('dotenv')
-const axios = require('axios')
 const ramda = require('ramda')
-axios.defaults.baseURL = 'https://utacsecapi.herokuapp.com'
 
-import { getEvents, doRsvp, getUser, getEventID } from './functions'
-const httpClient = axios.create()
-httpClient.defaults.timeout = 5000
+import {
+  getEvents,
+  doRsvp,
+  getUser,
+  getEventID,
+  getUserInfo,
+} from './functions'
 
 const token = process.env.botToken
 const logChannel = process.env.logChannel
@@ -50,7 +52,6 @@ client.on('message', async msg => {
   if (msg.content === '!events') {
     const data = await getEvents()
     if (data[0]) {
-      console.log(data[0])
       msg.channel.send(
         `Title: ${data[0].title}\nDate: ${data[0].month}, ${
           data[0].date
@@ -122,7 +123,7 @@ client.on('message', async msg => {
 
 client.on('message', async msg => {
   if (msg.author.bot) return
-  if (msg.content.includes('!rsvp')) {
+  if (msg.content.includes('!rsvp') && !msg.content.includes('!rsvpList')) {
     const param = msg.content.substr(6, msg.content.length)
     if (param !== 'help' && param !== '') {
       const user = await getUser(msg.member.id)
@@ -132,7 +133,6 @@ client.on('message', async msg => {
         )
       }
       const event = await getEventID(param)
-      console.log(event)
       if (event.status !== 200) {
         msg.channel.send(
           'Failed! That event does not exist please check you are typing the name in exact same way. Check by typing\n```css\n!events```',
@@ -153,6 +153,24 @@ client.on('message', async msg => {
 
 client.on('message', async msg => {
   if (msg.author.bot) return
+  if (msg.content.includes('!rsvpList')) {
+    const param = msg.content.substr(10, msg.content.length)
+    if (param && param !== '') {
+      const event = await getEventID(param)
+      if (event && event.status !== 200) {
+        msg.channel.send(
+          'Failed! That event does not exist please check you are typing the name in exact same way. Check by typing\n```css\n!events```',
+        )
+      }
+      if (event && event.status === 200) {
+        const list = await getUserInfo(event.data.rsvpList, msg)
+      }
+    }
+  }
+})
+
+client.on('message', async msg => {
+  if (msg.author.bot) return
   if (msg.content === '!id') {
     msg.channel.send(`Your discord id is \`${msg.member.id}\``)
   }
@@ -163,7 +181,7 @@ client.on('message', msg => {
   if (msg.content === '!mod') {
     if (msg.member.hasPermission('KICK_MEMBERS', false, false)) {
       msg.channel.send(
-        '```\n!kick - Followed by this command give me a list of users to kick, make sure you @mention them. Example !kick @radiumBot\n\n!ban - Followed by this command give me a list of users to ban, make sure you @mention them. Example !ban @radiumBot```',
+        '```\n!rsvpList EventName - Change EventName to the name of event you want info on.\n\n!kick - Followed by this command give me a list of users to kick, make sure you @mention them. Example !kick @CSECBOT\n\n!ban - Followed by this command give me a list of users to ban, make sure you @mention them. Example !ban @CSECBOT```',
       )
     } else {
       console.log('ERROR user without permissions tried !mod command')

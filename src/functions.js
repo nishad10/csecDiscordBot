@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = 'https://utacsecapi.herokuapp.com'
+axios.defaults.baseURL = 'http://localhost:8000'
 // 'https://utacsecapi.herokuapp.com' || 'http://localhost:8000'
 
 export const getEvents = () => {
@@ -33,6 +33,21 @@ export const getUser = discordID => {
     .catch(error => {
       console.log(error)
     })
+}
+export const getUserInfo = (list, msg) => {
+  Promise.all(
+    list.map(id =>
+      axios
+        .post(`/getUserInfo`, { id })
+        .then(res => {
+          return res.data
+        })
+        .catch(err => err),
+    ),
+  ).then(data => {
+    msg.channel.send(JSON.stringify(data))
+    return data
+  })
 }
 export const doRsvp = (eventID, userID) => {
   return axios
