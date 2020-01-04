@@ -4,6 +4,7 @@ const dotenv = require('dotenv')
 const axios = require('axios')
 const ramda = require('ramda')
 
+import { getEvents } from './functions'
 const httpClient = axios.create()
 httpClient.defaults.timeout = 5000
 
@@ -33,6 +34,25 @@ client.on('message', msg => {
 client.on('message', msg => {
   if (msg.content === '!help') {
     msg.channel.send('```\nHelp Test```')
+  }
+})
+
+client.on('message', async msg => {
+  if (msg.content === '!events') {
+    const data = await getEvents()
+    if (data[0]) {
+      console.log(data[0])
+      msg.channel.send(
+        `Title: ${data[0].title}\nDate: ${data[0].month}, ${
+          data[0].date
+        }.\nDay: ${data[0].day}, Time: ${data[0].time}\nLocation: ${
+          data[0].location
+        }, RSVP Status: ${
+          data[0].ticketStatus ? 'Can RSVP' : 'Cannot RSVP yet'
+        }\n
+       ${data[0].description}`,
+      )
+    }
   }
 })
 
