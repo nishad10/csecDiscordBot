@@ -51,17 +51,16 @@ client.on('message', async msg => {
   if (msg.author.bot) return
   if (msg.content === '!events') {
     const data = await getEvents()
-    if (data[0]) {
-      msg.channel.send(
-        `Title: ${data[0].title}\nDate: ${data[0].month}, ${
-          data[0].date
-        }.\nDay: ${data[0].day}, Time: ${data[0].time}\nLocation: ${
-          data[0].location
-        }, RSVP Status: ${
-          data[0].ticketStatus ? 'Can RSVP' : 'Cannot RSVP yet'
-        }\n
-       ${data[0].description}`,
-      )
+    if (data) {
+      let list = ''
+      data.map(event => {
+        list += `\` Name: \` **${event.title}**\n\` Date: \` **${event.month}, ${event.date} from [ ${event.time} ]**\n\` Location: \` **${event.location}**\n\n`
+      })
+      const embed = {
+        description: list,
+      }
+
+      msg.channel.send('', { embed })
     }
   }
 })
