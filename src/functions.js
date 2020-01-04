@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://localhost:8000'
+axios.defaults.baseURL = process.env.SERVER || 'http://localhost:8000'
 // 'https://utacsecapi.herokuapp.com' || 'http://localhost:8000'
 
 export const getEvents = () => {
