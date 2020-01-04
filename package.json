@@ -12,6 +12,10 @@
     "dev": "nodemon --exec babel-node src/index.js",
     "build": "yarn clean && babel -d ./build ./src -s",
     "start": "node ./build/index.js",
+    "heroku:init": "git remote add heroku https://git.heroku.com/discordbot-api.git || git remote set-url heroku  https://git.heroku.com/discordbot-api.git ",
+    "heroku": "yarn heroku:init",
+    "forceDeploy": "git push -f heroku HEAD:master",
+    "deploy": "git push heroku master",
     "win": "nodemon --exec babel-node src/index.js"
   },
   "devDependencies": {
