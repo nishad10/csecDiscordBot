@@ -33,7 +33,9 @@ client.on('message', msg => {
 
 client.on('message', msg => {
   if (msg.content === '!help') {
-    msg.channel.send('```\nHelp Test```')
+    msg.channel.send(
+      '```css\n!rsvp - Info on how to rsvp to events\n\n!rsvp help - More Info on how to link your accounts to be able to rsvp from discord.\n\n!mod - Moderation commands\n\n!id - To get your discord id for linking you acount.```',
+    )
   }
 })
 
@@ -56,6 +58,63 @@ client.on('message', async msg => {
   }
 })
 
+client.on('message', async msg => {
+  if (msg.content === '!rsvp') {
+    const embed = {
+      description: `
+** If you have already linked your account on the website with discord then the command you want is **
+> Just replace EventName with the event you want to rsvp for. 
+\`\`\`css
+!rsvp EventName
+\`\`\`
+
+** If you want to find events then **
+\`\`\`css
+!events
+\`\`\`
+
+** For help on how to link accounts type ** 
+\`\`\`css
+!rsvp help
+\`\`\`
+`,
+    }
+    msg.channel.send('', { embed })
+  }
+})
+
+client.on('message', async msg => {
+  if (msg.content === '!rsvp help') {
+    const embed = {
+      description: `
+** Link Discord-Website Accounts **
+* You need to have an account on the csec website for this.
+
+** New Account **
+* To make a new account on the website go to [SignUp](https://www.utacsec.org/signup)
+* You can enter your discord id while signing up on the website.
+> To get your discord id type
+\`\`\`css
+!id
+\`\`\`
+* Once you type in your id and sign up you can then rsvp to events using the command listed on the top.
+
+** Already have an account **
+* If you already have an account on the website then log in and just go to you accounts page located here [Account](https://www.utacsec.org/account)
+* Now get your discord id using \`!id\` and then enter it in the DiscordID section on account page.
+
+`,
+    }
+    msg.channel.send('', { embed })
+  }
+})
+
+client.on('message', async msg => {
+  if (msg.content === '!id') {
+    msg.channel.send(`Your discord id is \`${msg.member.id}\``)
+  }
+})
+
 client.on('message', msg => {
   if (msg.content === '!mod') {
     if (msg.member.hasPermission('KICK_MEMBERS', false, false)) {
@@ -67,39 +126,6 @@ client.on('message', msg => {
     }
   }
 })
-/*          const embed = {
-              description: `${!ramda.isNil(bittrex)
-                ? `[BITTREX](https://bittrex.com/Market/Index?MarketName=BTC-RADS)${priceTemplateBittrex(
-                    'Bittrex',
-                    bittrexData,
-                    bittrexBTC
-                  )}`
-                : '\n[BITTREX](https://bittrex.com/Market/Index?MarketName=BTC-RADS) servers are down.'}
-              ${!ramda.isNil(vcc)
-                ? `\n[VCC](https://vcc.exchange/exchange/basic?currency=btc&coin=rads)${priceTemplateVCC(
-                    'VCC',
-                    vccData,
-                    vccBTC
-                  )}`
-                : '\n[VCC](https://vcc.exchange/exchange/basic?currency=btc&coin=rads) servers are down.'}
-                  ${!ramda.isNil(upbit)
-                    ? `\n[UPbit](https://upbit.com/exchange?code=CRIX.UPBIT.BTC-RADS)${priceTemplateUpbit(
-                        'Upbit',
-                        upbitData,
-                        upbitBTC
-                      )}`
-                    : '\n[UPbit](https://upbit.com/exchange?code=CRIX.UPBIT.BTC-RADS) Servers are down.'}
-                  ${!ramda.isNil(finebox)
-                    ? `\n[FINEXBOX](https://www.finexbox.com/market/pair/RADS-BTC.html)${priceTemplateFinexbox(
-                        'Finexbox',
-                        fineboxData,
-                        coinMarketCapBTC
-                      )}`
-                    : '\n[FINEXBOX](https://www.finexbox.com/market/pair/RADS-BTC.html) Servers are down!'}`,
-              color: 4405442
-            }
-            msg.channel.send('', { embed })
-          } */
 
 client.on('message', message => {
   if (!message.guild)
