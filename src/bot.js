@@ -9,10 +9,19 @@ httpClient.defaults.timeout = 5000
 
 const token = process.env.botToken
 const logChannel = process.env.logChannel
-const whiteListGuilds = ['', ''] // dev personal , csecclub
+const whiteListGuilds = ['648922022809829407', '619607468292571137'] // dev personal , csecclub
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`)
+})
+
+client.on('guildMemberAdd', member => {
+  // Send the message to a designated channel on a server:
+  const channel = member.guild.channels.find(ch => ch.name === 'general1')
+  // Do nothing if the channel wasn't found on this server
+  if (!channel) return
+  // Send the message, mentioning the member
+  channel.send(`Hey ${member} welcome to the CSEC discord server. Have Fun!`)
 })
 
 client.on('message', msg => {
@@ -23,9 +32,7 @@ client.on('message', msg => {
 
 client.on('message', msg => {
   if (msg.content === '!help') {
-    msg.channel.send(
-      '```\n !price - Latest price/information of RADS exchanges.\n !mcap  - To get the market capitalization of RADS```'
-    )
+    msg.channel.send('```\nHelp Test```')
   }
 })
 
@@ -33,7 +40,7 @@ client.on('message', msg => {
   if (msg.content === '!mod') {
     if (msg.member.hasPermission('KICK_MEMBERS', false, false)) {
       msg.channel.send(
-        '```\n!kick - Followed by this command give me a list of users to kick, make sure you @mention them. Example !kick @radiumBot\n\n!ban - Followed by this command give me a list of users to ban, make sure you @mention them. Example !ban @radiumBot```'
+        '```\n!kick - Followed by this command give me a list of users to kick, make sure you @mention them. Example !kick @radiumBot\n\n!ban - Followed by this command give me a list of users to ban, make sure you @mention them. Example !ban @radiumBot```',
       )
     } else {
       console.log('ERROR user without permissions tried !mod command')
@@ -114,14 +121,14 @@ client.on('message', message => {
                             message.author.username
                           }issued command and successfully kicked ${
                             user.tag
-                          } at ${new Date().toLocaleDateString()}`
+                          } at ${new Date().toLocaleDateString()}`,
                         )
                     : message.channel.send(
                         `id:${message.author.id},username:${
                           message.author.username
                         }issued command and successfully kicked ${
                           user.tag
-                        } at ${new Date().toLocaleDateString()}`
+                        } at ${new Date().toLocaleDateString()}`,
                       )
                 })
                 .catch(err => {
@@ -132,10 +139,10 @@ client.on('message', message => {
                     ? client.channels
                         .get(logChannel)
                         .send(
-                          `${message.author.username} issued ${message.content}. ERROR: Unable to kick the ${user.tag} this might be because I dont have permissions.`
+                          `${message.author.username} issued ${message.content}. ERROR: Unable to kick the ${user.tag} this might be because I dont have permissions.`,
                         )
                     : message.channel.send(
-                        `${message.author.username} issued ${message.content}. ERROR: Unable to kick the ${user.tag} this might be because I dont have permissions.`
+                        `${message.author.username} issued ${message.content}. ERROR: Unable to kick the ${user.tag} this might be because I dont have permissions.`,
                       )
                   // Log the error
                   console.error('BOT couldnt KICK maybe permission error.', err)
@@ -146,10 +153,10 @@ client.on('message', message => {
                 ? client.channels
                     .get(logChannel)
                     .send(
-                      `${message.author.username} issued ${message.content}. ERROR: Unable to kick the ${user.tag} this might be because user doesnt exist in server.`
+                      `${message.author.username} issued ${message.content}. ERROR: Unable to kick the ${user.tag} this might be because user doesnt exist in server.`,
                     )
                 : message.channel.send(
-                    `${message.author.username} issued ${message.content}. ERROR: Unable to kick the ${user.tag} this might be because user doesnt exist in server.`
+                    `${message.author.username} issued ${message.content}. ERROR: Unable to kick the ${user.tag} this might be because user doesnt exist in server.`,
                   )
             }
             // Otherwise, if no user was mentioned
@@ -158,10 +165,10 @@ client.on('message', message => {
               ? client.channels
                   .get(logChannel)
                   .send(
-                    `${message.author.username} issued ${message.content}. ERROR: Unable to kick the ${user.tag} you cannot kick me using commands.`
+                    `${message.author.username} issued ${message.content}. ERROR: Unable to kick the ${user.tag} you cannot kick me using commands.`,
                   )
               : message.channel.send(
-                  `${message.author.username} issued ${message.content}. ERROR: Unable to kick the ${user.tag} you cannot kick me using commands.`
+                  `${message.author.username} issued ${message.content}. ERROR: Unable to kick the ${user.tag} you cannot kick me using commands.`,
                 )
           }
         })
@@ -170,15 +177,15 @@ client.on('message', message => {
           ? client.channels
               .get(logChannel)
               .send(
-                `${message.author.username} issued ${message.content}. ERROR: Unable to kick this might be because you didnt specify users to kick`
+                `${message.author.username} issued ${message.content}. ERROR: Unable to kick this might be because you didnt specify users to kick`,
               )
           : message.channel.send(
-              `${message.author.username} issued ${message.content}. ERROR: Unable to kick this might be because you didnt specify users to kick`
+              `${message.author.username} issued ${message.content}. ERROR: Unable to kick this might be because you didnt specify users to kick`,
             )
       }
     } else {
       console.error(
-        `${message.author.username} issued ${message.content}. ERROR: You dont have permission to do this.`
+        `${message.author.username} issued ${message.content}. ERROR: You dont have permission to do this.`,
       )
     }
   }
@@ -213,7 +220,7 @@ client.on('message', message => {
                */
               member
                 .ban({
-                  reason: 'They were bad!'
+                  reason: 'They were bad!',
                 })
                 .then(() => {
                   // We let the message author know we were able to ban the person
@@ -225,14 +232,14 @@ client.on('message', message => {
                             message.author.username
                           }issued command and successfully banned ${
                             user.tag
-                          } at ${new Date().toLocaleDateString()}`
+                          } at ${new Date().toLocaleDateString()}`,
                         )
                     : message.channel.send(
                         `id:${message.author.id},username:${
                           message.author.username
                         }issued command and successfully banned ${
                           user.tag
-                        } at ${new Date().toLocaleDateString()}`
+                        } at ${new Date().toLocaleDateString()}`,
                       )
                 })
                 .catch(err => {
@@ -243,10 +250,10 @@ client.on('message', message => {
                     ? client.channels
                         .get(logChannel)
                         .send(
-                          `${message.author.username} issued ${message.content}. ERROR: Unable to BAN the ${user.tag} this might be because I dont have permissions.`
+                          `${message.author.username} issued ${message.content}. ERROR: Unable to BAN the ${user.tag} this might be because I dont have permissions.`,
                         )
                     : message.channel.send(
-                        `${message.author.username} issued ${message.content}. ERROR: Unable to BAN the ${user.tag} this might be because I dont have permissions.`
+                        `${message.author.username} issued ${message.content}. ERROR: Unable to BAN the ${user.tag} this might be because I dont have permissions.`,
                       )
                   // Log the error
                   console.error('BOT couldnt BAN maybe permission error.', err)
@@ -257,10 +264,10 @@ client.on('message', message => {
                 ? client.channels
                     .get(logChannel)
                     .send(
-                      `${message.author.username} issued ${message.content}. ERROR: Unable to BAN the ${user.tag} this might be because user doesnt exist in server.`
+                      `${message.author.username} issued ${message.content}. ERROR: Unable to BAN the ${user.tag} this might be because user doesnt exist in server.`,
                     )
                 : message.channel.send(
-                    `${message.author.username} issued ${message.content}. ERROR: Unable to BAN the ${user.tag} this might be because user doesnt exist in server.`
+                    `${message.author.username} issued ${message.content}. ERROR: Unable to BAN the ${user.tag} this might be because user doesnt exist in server.`,
                   )
             }
           } else {
@@ -269,10 +276,10 @@ client.on('message', message => {
               ? client.channels
                   .get(logChannel)
                   .send(
-                    `${message.author.username} issued ${message.content}. ERROR: Unable to BAN the ${user.tag} you cannot kick me using commands.`
+                    `${message.author.username} issued ${message.content}. ERROR: Unable to BAN the ${user.tag} you cannot kick me using commands.`,
                   )
               : message.channel.send(
-                  `${message.author.username} issued ${message.content}. ERROR: Unable to BAN the ${user.tag} you cannot kick me using commands.`
+                  `${message.author.username} issued ${message.content}. ERROR: Unable to BAN the ${user.tag} you cannot kick me using commands.`,
                 )
           }
         })
@@ -281,22 +288,22 @@ client.on('message', message => {
           ? client.channels
               .get(logChannel)
               .send(
-                `${message.author.username} issued ${message.content}. ERROR: Unable to BAN this might be because you didnt specify users to kick`
+                `${message.author.username} issued ${message.content}. ERROR: Unable to BAN this might be because you didnt specify users to kick`,
               )
           : message.channel.send(
-              `${message.author.username} issued ${message.content}. ERROR: Unable to BAN this might be because you didnt specify users to kick`
+              `${message.author.username} issued ${message.content}. ERROR: Unable to BAN this might be because you didnt specify users to kick`,
             )
       }
     } else {
       console.error(
-        `${message.author.username} issued ${message.content}. ERROR: You dont have permission to do this.`
+        `${message.author.username} issued ${message.content}. ERROR: You dont have permission to do this.`,
       )
     }
   }
 })
 client.on('disconnect', () => {
   console.log(
-    `BOT shutting down at ${new Date().toLocaleDateString()} TIME : ${new Date().toLocaleTimeString()}`
+    `BOT shutting down at ${new Date().toLocaleDateString()} TIME : ${new Date().toLocaleTimeString()}`,
   )
 })
 client.login(token)
