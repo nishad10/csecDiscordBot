@@ -26,12 +26,14 @@ client.on('guildMemberAdd', member => {
 })
 
 client.on('message', msg => {
+  if (msg.author.bot) return
   if (msg.content === '!ping') {
     msg.channel.send('pong')
   }
 })
 
 client.on('message', msg => {
+  if (msg.author.bot) return
   if (msg.content === '!help') {
     msg.channel.send(
       '```css\n!rsvp - Info on how to rsvp to events\n\n!rsvp help - More Info on how to link your accounts to be able to rsvp from discord.\n\n!mod - Moderation commands\n\n!id - To get your discord id for linking you acount.```',
@@ -40,6 +42,7 @@ client.on('message', msg => {
 })
 
 client.on('message', async msg => {
+  if (msg.author.bot) return
   if (msg.content === '!events') {
     const data = await getEvents()
     if (data[0]) {
@@ -59,6 +62,7 @@ client.on('message', async msg => {
 })
 
 client.on('message', async msg => {
+  if (msg.author.bot) return
   if (msg.content === '!rsvp') {
     const embed = {
       description: `
@@ -112,10 +116,10 @@ client.on('message', async msg => {
 const regex = /(?<=!rsvp ).*/gm
 
 client.on('message', async msg => {
+  if (msg.author.bot) return
   if (msg.content.includes('!rsvp')) {
-    console.log('include')
     const param = regex.exec(msg.content)
-    if (param !== '' && param !== 'help') {
+    if (param && param[0] !== '' && param[0] !== 'help') {
       console.log('include regex!', param)
       msg.channel.send(`Sorry the command isnt ready`)
     }
@@ -123,12 +127,14 @@ client.on('message', async msg => {
 })
 
 client.on('message', async msg => {
+  if (msg.author.bot) return
   if (msg.content === '!id') {
     msg.channel.send(`Your discord id is \`${msg.member.id}\``)
   }
 })
 
 client.on('message', msg => {
+  if (msg.author.bot) return
   if (msg.content === '!mod') {
     if (msg.member.hasPermission('KICK_MEMBERS', false, false)) {
       msg.channel.send(
@@ -141,6 +147,7 @@ client.on('message', msg => {
 })
 
 client.on('message', message => {
+  if (message.author.bot) return
   if (!message.guild)
     // Ignore messages that aren't from a guild
     return
@@ -249,8 +256,8 @@ client.on('message', message => {
     }
   }
 })
-
-client.on('message', message => {
+!client.on('message', message => {
+  if (message.author.bot) return
   if (!message.guild)
     // Ignore messages that aren't from a guild
     return
