@@ -7,18 +7,17 @@ app.use(bodyParser.json())
 
 app.get('/', function(req, res) {
   res.json({
-    name: 'discordBot',
+    name: 'csecDiscordBot',
     version: '1.0.0',
-    description: 'A discord bot',
-    repository: 'https://github.com/nishad10/discordBot.git',
+    description: 'Hackerman',
+    repository: 'https://github.com/nishad10/csecDiscordBot',
     author: 'Nishad Aherrao',
-    license: 'GNU GPL'
+    license: 'GNU GPL',
   })
 })
-var server = app.listen(process.env.PORT, '0.0.0.0', () => {
-  const host = server.address().address
+var server = app.listen(process.env.PORT, () => {
   const port = server.address().port
-  console.log('Web server started at http://%s:%s', host, port)
+  console.info('Web server started at http://localhost:%s', port)
 })
 
 module.exports = bot => {
