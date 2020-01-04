@@ -3,14 +3,18 @@ const client = new Discord.Client()
 const dotenv = require('dotenv')
 const axios = require('axios')
 const ramda = require('ramda')
+axios.defaults.baseURL = 'https://utacsecapi.herokuapp.com'
 
-import { getEvents } from './functions'
+import { getEvents, doRsvp, getUser, getEventID } from './functions'
 const httpClient = axios.create()
 httpClient.defaults.timeout = 5000
 
 const token = process.env.botToken
 const logChannel = process.env.logChannel
 const whiteListGuilds = ['648922022809829407', '619607468292571137'] // dev personal , csecclub
+
+//   if (!ramda.contains(msg.guild.id, whiteListGuilds)) return
+// To restrict access to certail guilds
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`)
@@ -113,15 +117,36 @@ client.on('message', async msg => {
   }
 })
 
-const regex = /(?<=!rsvp ).*/gm
+//const regex = /(?<=!rsvp).*/gm
+//const regex1 = /!rsvp([\s\S]*)/gm
 
 client.on('message', async msg => {
   if (msg.author.bot) return
   if (msg.content.includes('!rsvp')) {
-    const param = regex.exec(msg.content)
-    if (param && param[0] !== '' && param[0] !== 'help') {
-      console.log('include regex!', param)
-      msg.channel.send(`Sorry the command isnt ready`)
+    const param = msg.content.substr(6, msg.content.length)
+    if (param !== 'help' && param !== '') {
+      const user = await getUser(msg.member.id)
+      if (user.status !== 200) {
+        msg.channel.send(
+          'Failed! Please make sure you have your discord account linked to the website account try\n```css\n!rsvp help```',
+        )
+      }
+      const event = await getEventID(param)
+      console.log(event)
+      if (event.status !== 200) {
+        msg.channel.send(
+          'Failed! That event does not exist please check you are typing the name in exact same way. Check by typing\n```css\n!events```',
+        )
+      }
+      const data = await doRsvp(event.data._id, user.data._id)
+      if (data.status !== 200) {
+        if (data.data.message) {
+          msg.channel.send(data.data.message)
+        } else msg.channel.send('Failed! Something went wrong ')
+      } else
+        msg.channel.send(
+          'Thank you the RSVP! We look forward to seeing you at the event.',
+        )
     }
   }
 })
