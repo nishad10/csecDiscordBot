@@ -109,6 +109,19 @@ client.on('message', async msg => {
   }
 })
 
+const regex = /(?<=!rsvp ).*/gm
+
+client.on('message', async msg => {
+  if (msg.content.includes('!rsvp')) {
+    console.log('include')
+    const param = regex.exec(msg.content)
+    if (param !== '' && param !== 'help') {
+      console.log('include regex!', param)
+      msg.channel.send(`Sorry the command isnt ready`)
+    }
+  }
+})
+
 client.on('message', async msg => {
   if (msg.content === '!id') {
     msg.channel.send(`Your discord id is \`${msg.member.id}\``)
