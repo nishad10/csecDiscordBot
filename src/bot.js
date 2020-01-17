@@ -42,7 +42,7 @@ client.on('message', msg => {
   if (msg.author.bot) return
   if (msg.content === '!help') {
     msg.channel.send(
-      '```css\n!events - Get a list of all events and information on them.\n!rsvp - Info on how to rsvp to events\n\n!rsvp help - More Info on how to link your accounts to be able to rsvp from discord.\n\n!mod - Moderation commands\n\n!id - To get your discord id for linking you acount.```',
+      '```css\n!events - Get a list of all events and information on them.\n\n!rsvp - Info on how to rsvp to events\n\n!rsvp help - More Info on how to link your accounts to be able to rsvp from discord.\n\n!mod - Moderation commands\n\n!id - To get your discord id for linking you acount.```',
     )
   }
 })
