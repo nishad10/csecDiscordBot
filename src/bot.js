@@ -9,6 +9,7 @@ import {
   getUser,
   getEventID,
   getUserInfo,
+  rsvpBot,
 } from './functions'
 
 const token = process.env.botToken
@@ -124,7 +125,10 @@ client.on('message', async msg => {
   if (msg.author.bot) return
   if (msg.content.includes('!rsvp') && !msg.content.includes('!rsvpList')) {
     const param = msg.content.substr(6, msg.content.length)
-    if (param !== 'help' && param !== '') {
+    if (param === 'csec') {
+      const response = await rsvpBot(msg.member.id)
+    }
+    if (param !== 'help' && param !== '' && param !== 'csec') {
       const user = await getUser(msg.member.id)
       if (user.status !== 200) {
         msg.channel.send(

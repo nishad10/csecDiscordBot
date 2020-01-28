@@ -60,3 +60,14 @@ export const doRsvp = (eventID, userID) => {
     })
     .catch(err => err)
 }
+export const rsvpBot = discordID => {
+  console.log(discordID)
+  return axios
+    .post(`/rsvpBot`, {
+      discordID,
+    })
+    .then(res => {
+      return res
+    })
+    .catch(err => console.error(err))
+}
